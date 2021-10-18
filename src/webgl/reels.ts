@@ -50,44 +50,46 @@ export class Reels {
         let y = 0
         let x = 0
         let soundInd = 0
-        for (let i = 0; i < 5; i++) {
-            y = 0
-            let reelCol = new PIXI.Container()
+       
+        for(let i = 0; i < 3; i++){
+            x = 0
+            let reelRow = new PIXI.Container()
             this.ids.push([])
-            for (let j = 0; j < 3; j++) {
+            for(let j = 0; j < 5; j++){
                 let reelSymbol = new PIXI.Sprite(textures["icon" + this.getIconId(this.reelsJson[i].reel.icons) + ".png"]);
 
                 reelSymbol.position.set(x, y)
-                reelCol.addChild(reelSymbol)
+                reelRow.addChild(reelSymbol)
 
-
-                this.reelsContainer.addChild(reelCol)
-                y += reelSymbol.height * 1.15
+                this.reelsContainer.addChild(reelRow)
+                x += reelSymbol.width * 1.15
                 symbWidth = reelSymbol.width
             }
             this.addID.bind(this)
             this.spinTimeline.add(() => {
                 //@ts-ignore
-                reelCol.filters = [new MotionBlurFilter([1, 2], 9)]
+                reelRow.filters = [new MotionBlurFilter([1, 2], 9)]
             }, 0)
-            this.spinTimeline.fromTo(reelCol.position, 0.5, { y: reelCol.y }, { y: reelCol.height * 1.25, ease: "back.inOut(1.7)" }, i * 0.15)
+            this.spinTimeline.fromTo(reelRow.position, 0.5, { y: reelRow.y }, { y: reelRow.height * 1.25, ease: "back.inOut(1.7)" }, i * 0.15)
             this.spinTimeline.add(() => {
-                reelCol.position.y = - reelCol.height * 1.25
-                for (let r = 0; r < reelCol.children.length; r++) {
+                reelRow.position.y = - reelRow.height * 1.25
+                for (let r = 0; r < reelRow.children.length; r++) {
                     let id = this.getIconId(this.reelsJson[i].reel.icons)
                     this.addID(id, i);
-                    (reelCol.children[r] as PIXI.Sprite).texture = textures["icon" + id + ".png"]
+                    (reelRow.children[r] as PIXI.Sprite).texture = textures["icon" + id + ".png"]
                 }
             })
-            this.spinTimeline.to(reelCol.position, 0.5, { y: 0, ease: "back.inOut(1.7)" })
+            this.spinTimeline.to(reelRow.position, 0.5, { y: 0, ease: "back.inOut(1.7)" })
             this.spinTimeline.add(() => {
-                reelCol.filters = []
+                reelRow.filters = []
                 soundInd++
+                if(soundInd >= 5){
+                    soundInd = 0 
+                }
                 this.sounds[soundInd].play()
             })
-            reelCol.position.y = 0
-
-            x += symbWidth! * 1.15
+            reelRow.position.x = 0
+            y += symbWidth! * 1.15
         }
 
         this.resize()
