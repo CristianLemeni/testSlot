@@ -34,6 +34,10 @@ export class Init {
         this.loader.loadGraphics(graphics)
     }
 
+    loadSounds(sounds: Array<string>){
+        this.loader.loadSounds(sounds)
+    }
+
     addBackground(){
         let bk = new Background(this.app.stage)
 
@@ -44,7 +48,7 @@ export class Init {
     }
 
     addReels(){
-        let reels = new Reels(this.app.stage)
+        let reels = new Reels(this.app.stage, this.loader.sounds)
 
         let reelTextures = this.loader.getLoaderManager().resources["assets/symbols.json"].textures
         let uiTextures = this.loader.getLoaderManager().resources["assets/myAssets.json"].textures

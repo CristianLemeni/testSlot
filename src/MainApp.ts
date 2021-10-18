@@ -13,10 +13,10 @@ export class MainApp {
 		this.init = new Init(pixiApp);
 	}
 
-    load(pixiApp, canvas, assets){
+    load(pixiApp, canvas, assets, sfx){
         this.init.init(pixiApp, canvas)
         this.init.loadGraphics(assets)
-
+        this.init.loadSounds(sfx)
         document.addEventListener("graphicsLoaded", () => {
             this.init.addBackground()
             this.init.addReels()
@@ -50,8 +50,17 @@ document.addEventListener("DOMContentLoaded", () => {
         "assets/myAssets.json"
     ]
 
+    const sounds = [
+        "assets/Start_Button.mp3",
+        "assets/Reel_Stop_1.mp3",
+        "assets/Reel_Stop_2.mp3",
+        "assets/Reel_Stop_3.mp3",
+        "assets/Reel_Stop_4.mp3",
+        "assets/Reel_Stop_5.mp3"
+    ]
+
 	let app = new MainApp(pixiApp);
-    app.load(pixiApp, canvas, graphics)
+    app.load(pixiApp, canvas, graphics, sounds)
 })
 
 function animate() {
